@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --background: 18 43% 97%;
+  --foreground: 0 0% 10%;
+  --primary: 18 43% 59%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 27 24% 92%;
+  --accent: 30 10% 16%;
+  --success: 96 24% 40%;
+  --destructive: 352 51% 46%;
+  --border: 28 22% 84%;
+  --ring: 18 43% 59%;
+  --card: 0 0% 100%;
+  --card-foreground: 0 0% 10%;
+  --radius-lg: 1.5rem;
+  --radius-md: 1rem;
+  --radius-sm: 0.75rem;
+  --shadow-soft: 0 18px 40px rgba(55, 38, 28, 0.08);
+  --shadow-card: 0 8px 24px rgba(55, 38, 28, 0.08);
+}
+
+.dark {
+  --background: 20 10% 10%;
+  --foreground: 18 20% 96%;
+  --primary: 18 43% 59%;
+  --primary-foreground: 0 0% 100%;
+  --muted: 24 10% 16%;
+  --accent: 18 20% 96%;
+  --success: 96 24% 44%;
+  --destructive: 352 51% 56%;
+  --border: 20 10% 20%;
+  --ring: 18 43% 59%;
+  --card: 20 10% 12%;
+  --card-foreground: 18 20% 96%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+a {
+  text-decoration: none;
+}
