@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -53,7 +54,7 @@ export function ProductEditor({
       className="space-y-4"
       onSubmit={form.handleSubmit(async (values) => {
         const method = productId ? "PUT" : "POST";
-        const endpoint = productId ? `/api/produtos/${productId}` : "/api/produtos";
+        const endpoint = productId ? `/api/admin/produtos/${productId}` : "/api/admin/produtos";
 
         await fetch(endpoint, {
           method,
@@ -67,6 +68,42 @@ export function ProductEditor({
         router.refresh();
       })}
     >
+      {/* Variants preview with low-stock badge */}
+      <div>
+        <Label>Variantes (pré-visualização)</Label>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr>
+                <th className="text-left">Tamanho</th>
+                <th className="text-left">Cor</th>
+                <th className="text-left">SKU</th>
+                <th className="text-left">Estoque</th>
+              </tr>
+            </thead>
+            <tbody>
+              {form.watch("variants")?.map((v, i) => (
+                <tr key={i} className="border-t">
+                  <td className="py-2">{v.size}</td>
+                  <td className="py-2 flex items-center gap-2">
+                    <span style={{ width: 14, height: 14, background: v.colorHex }} className="inline-block rounded" />
+                    {v.color}
+                  </td>
+                  <td className="py-2">{v.sku}</td>
+                  <td className="py-2">
+                    {v.stock}
+                    {v.stock < 5 ? (
+                      <span className="ml-2 inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs text-red-700">
+                        Estoque baixo
+                      </span>
+                    ) : null}
+                  </td>
+                </tr>
+              )) ?? <tr><td colSpan={4} className="py-2">Nenhuma variante</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </div>
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <Label htmlFor="name">Nome</Label>

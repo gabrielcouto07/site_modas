@@ -76,11 +76,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
     async authorized({ auth, request }) {
-      if (!request.nextUrl.pathname.startsWith("/admin")) {
-        return true;
+      const path = request.nextUrl.pathname;
+
+      if (path.startsWith("/admin")) {
+        return auth?.user?.role === Role.ADMIN;
       }
 
-      return auth?.user?.role === Role.ADMIN;
+      // Require authentication for /conta pages (redirects to signIn page if false)
+      if (path.startsWith("/conta")) {
+        return !!auth?.user;
+      }
+
+      return true;
     },
   },
 });

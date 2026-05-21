@@ -1,0 +1,56 @@
+[
+  {
+    "id": "prod-001",
+    "name": "Vestido Midi Lino Nude",
+    "slug": "vestido-midi-lino-nude",
+    "description": "Vestido leve e versátil, ideal para dia a dia.",
+    "category": { "id": "cat-vestidos", "name": "Vestidos", "slug": "vestidos" },
+    "basePrice": 259.9,
+    "compareAtPrice": 299.9,
+    "sku": "CM-0001",
+    "isActive": true,
+    "images": [
+      { "url": "/products/placeholder/01.webp", "alt": "Vestido Midi Lino Nude", "sortOrder": 1 }
+    ],
+    "variants": [
+      { "size": "P", "color": "Terracota", "colorHex": "#c2856b", "stock": 8, "sku": "CM-0001-P" },
+      { "size": "M", "color": "Terracota", "colorHex": "#c2856b", "stock": 3, "sku": "CM-0001-M" },
+      { "size": "G", "color": "Terracota", "colorHex": "#c2856b", "stock": 12, "sku": "CM-0001-G" }
+    ]
+  },
+  {
+    "id": "prod-002",
+    "name": "Blusa Cropped Algodao Verde Oliva",
+    "slug": "blusa-cropped-algodao-verde-oliva",
+    "description": "Blusa canelada com toque macio.",
+    "category": { "id": "cat-blusas", "name": "Blusas", "slug": "blusas" },
+    "basePrice": 129.9,
+    "compareAtPrice": 149.9,
+    "sku": "CM-0002",
+    "isActive": true,
+    "images": [
+      { "url": "/products/placeholder/02.webp", "alt": "Blusa Cropped", "sortOrder": 1 }
+    ],
+    "variants": [
+      { "size": "P", "color": "Oliva", "colorHex": "#6d7655", "stock": 2, "sku": "CM-0002-P" },
+      { "size": "M", "color": "Oliva", "colorHex": "#6d7655", "stock": 5, "sku": "CM-0002-M" }
+    ]
+  },
+  {
+    "id": "prod-003",
+    "name": "Calca Wide Leg Marinho",
+    "slug": "calca-wide-leg-marinho",
+    "description": "Calça alfaiataria com corte amplo.",
+    "category": { "id": "cat-calcas", "name": "Calças", "slug": "calcas" },
+    "basePrice": 219.9,
+    "compareAtPrice": 259.9,
+    "sku": "CM-0003",
+    "isActive": true,
+    "images": [
+      { "url": "/products/placeholder/03.webp", "alt": "Calca Wide Leg", "sortOrder": 1 }
+    ],
+    "variants": [
+      { "size": "M", "color": "Marinho", "colorHex": "#24364d", "stock": 11, "sku": "CM-0003-M" }
+    ]
+  }
+]
