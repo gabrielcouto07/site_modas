@@ -109,6 +109,13 @@ export async function getAdminProducts() {
 export async function getAdminOrders() {
   return prisma.order.findMany({
     include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
       items: true,
     },
     orderBy: {
@@ -117,8 +124,106 @@ export async function getAdminOrders() {
   });
 }
 
-export async function getOrderById(orderId: string) {
+export async function getAdminOrderById(orderId: string) {
   return prisma.order.findUnique({
+    where: {
+      id: orderId,
+    },
+    include: {
+      user: {
+        include: {
+          addresses: {
+            orderBy: {
+              isDefault: "desc",
+            },
+          },
+        },
+      },
+      items: {
+        include: {
+          product: {
+            select: {
+              id: true,
+              slug: true,
+              name: true,
+            },
+          },
+          variant: {
+            select: {
+              id: true,
+              size: true,
+              color: true,
+              colorHex: true,
+            },
+          },
+        },
+      },
+    },
+  });
+}
+
+export async function getAdminCustomers() {
+  return prisma.user.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      _count: {
+        select: {
+          orders: true,
+          addresses: true,
+        },
+      },
+      orders: {
+        select: {
+          id: true,
+          number: true,
+          status: true,
+          total: true,
+          createdAt: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        take: 1,
+      },
+    },
+  });
+}
+
+export async function getAdminCustomerById(userId: string) {
+  return prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    include: {
+      addresses: {
+        orderBy: [
+          {
+            isDefault: "desc",
+          },
+          {
+            createdAt: "desc",
+          },
+        ],
+      },
+      orders: {
+        include: {
+          items: true,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
+  });
+}
+
+export async function getOrderById(
+  orderId: string,
+  viewer?: { userId?: string; role?: "ADMIN" | "USER" }
+) {
+  const order = await prisma.order.findUnique({
     where: {
       id: orderId,
     },
@@ -126,6 +231,20 @@ export async function getOrderById(orderId: string) {
       items: true,
     },
   });
+
+  if (!order) {
+    return null;
+  }
+
+  if (viewer?.role === "ADMIN") {
+    return order;
+  }
+
+  if (order.userId && viewer?.userId !== order.userId) {
+    return null;
+  }
+
+  return order;
 }
 
 export async function getOrdersByUser(userId: string) {

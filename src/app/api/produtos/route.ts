@@ -1,9 +1,9 @@
+import { type Prisma, Role } from "@prisma/client";
 import DOMPurify from "isomorphic-dompurify";
 import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { productSchema } from "@/lib/schemas/product";
-import { auth } from "@/lib/auth";
-import { Role } from "@prisma/client";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   const sizes = params.getAll("sizes");
   const colors = params.getAll("colors");
 
-  const where: any = {
+  const where: Prisma.ProductWhereInput = {
     isActive: true,
     category: category
       ? {
@@ -59,10 +59,10 @@ export async function GET(request: Request) {
 
   const orderBy =
     sortBy === "price_asc"
-      ? { basePrice: "asc" }
+      ? { basePrice: "asc" as const }
       : sortBy === "price_desc"
-      ? { basePrice: "desc" }
-      : { createdAt: "desc" };
+        ? { basePrice: "desc" as const }
+        : { createdAt: "desc" as const };
 
   const products = await prisma.product.findMany({
     where,
@@ -87,17 +87,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
   }
 
-  const payload = productSchema.parse(await request.json());
+  const payload = productSchema.safeParse(await request.json());
+  if (!payload.success) {
+    return NextResponse.json(
+      { error: payload.error.issues[0]?.message ?? "Dados do produto invalidos." },
+      { status: 400 }
+    );
+  }
+
+  const { images, variants, ...productData } = payload.data;
 
   const product = await prisma.product.create({
     data: {
-      ...payload,
-      description: DOMPurify.sanitize(payload.description),
+      ...productData,
+      description: DOMPurify.sanitize(productData.description),
       images: {
-        create: payload.images,
+        create: images,
       },
       variants: {
-        create: payload.variants,
+        create: variants,
       },
     },
   });

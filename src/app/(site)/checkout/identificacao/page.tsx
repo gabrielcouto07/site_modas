@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CheckoutIdentificationForm } from "@/components/checkout/CheckoutIdentificationForm";
 import { CheckoutProgress } from "@/components/checkout/CheckoutProgress";
+import { CheckoutVisualPanel } from "@/components/checkout/CheckoutVisualPanel";
 import { Button } from "@/components/ui/button";
 
 export default function CheckoutIdentificationPage() {
@@ -20,15 +21,17 @@ export default function CheckoutIdentificationPage() {
             </Button>
           </div>
         </div>
-        <div className="rounded-[2rem] border border-border/70 bg-[linear-gradient(135deg,#f8f4ef_0%,#f3ebe3_55%,#f8f7f5_100%)] p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.22em] text-foreground/55">
-            Por que pedimos isso?
-          </p>
-          <p className="mt-3 text-sm leading-7 text-foreground/68">
-            Mantém a jornada clara para o cliente e prepara a base para persistir dados de contato,
-            entrega e emissão do pedido.
-          </p>
-        </div>
+        <CheckoutVisualPanel
+          eyebrow="Por que pedimos isso?"
+          title="Acesso simples, sem quebrar a jornada"
+          description="O botão de entrar usa o e-mail para enviar o link de acesso via NextAuth, enquanto os dados de contato seguem prontos para persistir no checkout e no cadastro."
+          note="Login por e-mail ativo"
+          images={[
+            "/products/placeholder/03.webp",
+            "/products/placeholder/06.webp",
+            "/products/placeholder/10.webp",
+          ]}
+        />
       </div>
     </div>
   );

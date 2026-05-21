@@ -1,4 +1,4 @@
-import type { Product, ProductImage, ProductVariant } from "@prisma/client";
+import type { Category, Product, ProductImage, ProductVariant } from "@prisma/client";
 import { ProductCard } from "./ProductCard";
 
 export function ProductGrid({
@@ -6,6 +6,7 @@ export function ProductGrid({
 }: {
   products: Array<
     Product & {
+      category: Category;
       images: ProductImage[];
       variants: ProductVariant[];
     }

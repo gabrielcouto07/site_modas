@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CheckoutPaymentClient } from "@/components/checkout/CheckoutPaymentClient";
 import { CheckoutProgress } from "@/components/checkout/CheckoutProgress";
+import { CheckoutVisualPanel } from "@/components/checkout/CheckoutVisualPanel";
 import { Button } from "@/components/ui/button";
 
 export default function CheckoutPaymentPage() {
@@ -23,16 +24,17 @@ export default function CheckoutPaymentPage() {
             </Button>
           </div>
         </div>
-        <div className="rounded-[2rem] border border-border/70 bg-[linear-gradient(135deg,#f8f4ef_0%,#f3ebe3_55%,#f8f7f5_100%)] p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.22em] text-foreground/55">
-            Meios de pagamento
-          </p>
-          <ul className="mt-3 space-y-3 text-sm leading-7 text-foreground/68">
-            <li>• Pix com confirmação rápida.</li>
-            <li>• Cartão com parcelamento preparado para o Mercado Pago.</li>
-            <li>• Boleto com webhooks e atualização de status prontos para integração.</li>
-          </ul>
-        </div>
+        <CheckoutVisualPanel
+          eyebrow="Meios de pagamento"
+          title="Pix, cartão e boleto com visual de vitrine"
+          description="Enquanto o Mercado Pago é conectado, este bloco mantém a sensação de produto final com imagens de apoio e um acabamento leve, como no restante da loja."
+          note="Pagamento pronto para integrar"
+          images={[
+            "/products/placeholder/01.webp",
+            "/products/placeholder/02.webp",
+            "/products/placeholder/04.webp",
+          ]}
+        />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CheckoutDeliveryForm } from "@/components/checkout/CheckoutDeliveryForm";
 import { CheckoutProgress } from "@/components/checkout/CheckoutProgress";
+import { CheckoutVisualPanel } from "@/components/checkout/CheckoutVisualPanel";
 import { Button } from "@/components/ui/button";
 
 export default function CheckoutDeliveryPage() {
@@ -23,14 +24,17 @@ export default function CheckoutDeliveryPage() {
             </Button>
           </div>
         </div>
-        <div className="rounded-[2rem] border border-border/70 bg-[linear-gradient(135deg,#f8f4ef_0%,#f3ebe3_55%,#f8f7f5_100%)] p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.22em] text-foreground/55">Frete</p>
-          <ul className="mt-3 space-y-3 text-sm leading-7 text-foreground/68">
-            <li>• CEP de origem preparado para cálculo real ou fallback.</li>
-            <li>• Opções de prazo e custo para PAC, SEDEX e variações mockadas.</li>
-            <li>• Base pronta para Melhor Envio sem travar o fluxo de teste.</li>
-          </ul>
-        </div>
+        <CheckoutVisualPanel
+          eyebrow="Frete e endereço"
+          title="Visual limpo para conferir entrega e prazo"
+          description="O painel lateral ajuda a simular a etapa de conferência antes do cálculo real de frete entrar. Assim você consegue validar a hierarquia visual agora e integrar depois."
+          note="CEP e imagens placeholder"
+          images={[
+            "/products/placeholder/05.webp",
+            "/products/placeholder/08.webp",
+            "/products/placeholder/12.webp",
+          ]}
+        />
       </div>
     </div>
   );

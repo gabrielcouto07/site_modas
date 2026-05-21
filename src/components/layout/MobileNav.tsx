@@ -63,6 +63,13 @@ export function MobileNav() {
               Favoritos
             </Link>
             <Link
+              href="/checkout/identificacao"
+              className="flex items-center gap-3 rounded-2xl border border-border px-3 py-3"
+            >
+              <User2 className="h-4 w-4" />
+              Entrar
+            </Link>
+            <Link
               href="/conta"
               className="flex items-center gap-3 rounded-2xl border border-border px-3 py-3"
             >

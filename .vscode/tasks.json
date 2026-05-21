@@ -8,6 +8,13 @@
 			"isBackground": true,
 			"problemMatcher": [],
 			"group": "build"
+		},
+		{
+			"label": "dev",
+			"type": "shell",
+			"command": "pnpm dev",
+			"isBackground": true,
+			"group": "build"
 		}
 	]
 }

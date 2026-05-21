@@ -64,6 +64,13 @@ export async function Header() {
                 </Button>
               </Link>
               <HeaderActions />
+              {!session?.user ? (
+                <Link href="/checkout/identificacao">
+                  <Button variant="outline" size="sm">
+                    Entrar
+                  </Button>
+                </Link>
+              ) : null}
               <Link href={session?.user?.role === "ADMIN" ? "/admin" : "/conta"}>
                 <Button variant="ghost" size="sm" aria-label="Minha conta">
                   <User2 className="h-5 w-5" />

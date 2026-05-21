@@ -1,6 +1,7 @@
-import { ArrowRight, CheckCircle2, CreditCard, Truck, UserRound } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { CheckoutProgress } from "@/components/checkout/CheckoutProgress";
+import { CheckoutVisualPanel } from "@/components/checkout/CheckoutVisualPanel";
 import { Button } from "@/components/ui/button";
 
 export default function CheckoutPage() {
@@ -10,30 +11,32 @@ export default function CheckoutPage() {
         <div className="space-y-4">
           <p className="text-sm uppercase tracking-[0.22em] text-foreground/55">Checkout</p>
           <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            Seu fluxo de compra em três etapas.
+            Entre, confirme a entrega e finalize o pagamento.
           </h1>
           <p className="max-w-2xl text-base leading-7 text-foreground/68">
-            Uma jornada simples para capturar identificação, entrega e pagamento sem perder contexto
-            do pedido.
+            O fluxo já está alinhado em login, entrega e pagamento. O visual abaixo usa imagens
+            placeholder para simular o catálogo real enquanto o acervo completo entra.
           </p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <Button asChild>
+              <Link href="/checkout/identificacao">Entrar no checkout</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href="/loja">Voltar para a loja</Link>
+            </Button>
+          </div>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {[
-            { icon: UserRound, title: "Identificação", text: "Dados do cliente e contato." },
-            { icon: Truck, title: "Entrega", text: "CEP, frete e prazo." },
-            { icon: CreditCard, title: "Pagamento", text: "Pix, cartão e boleto." },
-            { icon: CheckCircle2, title: "Confirmação", text: "Revisão final do pedido." },
-          ].map((item) => (
-            <div
-              key={item.title}
-              className="rounded-[1.5rem] border border-border/70 bg-white/80 p-4"
-            >
-              <item.icon className="h-5 w-5 text-primary" />
-              <h2 className="mt-3 font-medium text-foreground">{item.title}</h2>
-              <p className="mt-1 text-sm text-foreground/60">{item.text}</p>
-            </div>
-          ))}
-        </div>
+        <CheckoutVisualPanel
+          eyebrow="Preview do fluxo"
+          title="Referência visual com peças do catálogo"
+          description="Esse bloco ajuda a validar o ritmo da página antes das imagens finais entrarem. A estrutura permanece limpa, leve e parecida com o padrão do restante da loja."
+          note="Imagens placeholder ativadas"
+          images={[
+            "/products/placeholder/01.webp",
+            "/products/placeholder/04.webp",
+            "/products/placeholder/09.webp",
+          ]}
+        />
       </section>
 
       <CheckoutProgress activeStep={1} />
@@ -41,7 +44,7 @@ export default function CheckoutPage() {
       <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <div className="rounded-[2rem] border border-border/70 bg-white/85 p-6 shadow-sm">
           <h2 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
-            Comece pela identificação
+            Comece pelo acesso e identificação
           </h2>
           <p className="mt-2 text-sm leading-6 text-foreground/65">
             O checkout já está estruturado para seguir adiante sem perder o contexto do carrinho.
@@ -56,14 +59,17 @@ export default function CheckoutPage() {
           </div>
         </div>
 
-        <div className="rounded-[2rem] border border-border/70 bg-white/85 p-6 shadow-sm">
-          <p className="text-sm uppercase tracking-[0.22em] text-foreground/55">Resumo do fluxo</p>
-          <ul className="mt-4 space-y-3 text-sm leading-6 text-foreground/68">
-            <li>• Dados de contato e identificação fiscal.</li>
-            <li>• Cálculo de frete com fallback local enquanto a integração não entra.</li>
-            <li>• Pagamento com Mercado Pago preparado para Pix, cartão e boleto.</li>
-          </ul>
-        </div>
+        <CheckoutVisualPanel
+          eyebrow="Resumo do fluxo"
+          title="Login, entrega e pagamento em sequência"
+          description="A ordem visual e funcional agora fica mais clara para o cliente: primeiro entrar, depois informar a entrega e por fim fechar o pagamento."
+          note="Sequência corrigida"
+          images={[
+            "/products/placeholder/02.webp",
+            "/products/placeholder/07.webp",
+            "/products/placeholder/11.webp",
+          ]}
+        />
       </div>
     </div>
   );

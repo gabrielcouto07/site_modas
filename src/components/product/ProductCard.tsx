@@ -1,4 +1,4 @@
-import type { Product, ProductImage, ProductVariant } from "@prisma/client";
+import type { Category, Product, ProductImage, ProductVariant } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,7 @@ import { ProductCardActions } from "./ProductCardActions";
 
 type ProductCardProps = {
   product: Product & {
+    category: Category;
     images: ProductImage[];
     variants: ProductVariant[];
   };

@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useCart } from "@/hooks/use-cart";
+import { useToast } from "@/hooks/use-toast";
+import { saveCheckoutProfile } from "@/lib/checkout-profile";
 import { addressSchema } from "@/lib/schemas/address";
 import { formatCEP } from "@/lib/utils";
 import { useUiStore } from "@/stores/ui-store";
@@ -21,6 +23,7 @@ type DeliveryFormValues = z.input<typeof addressSchema>;
 export function CheckoutDeliveryForm() {
   const router = useRouter();
   const { items } = useCart();
+  const { toast } = useToast();
   const draft = useUiStore((state) => state.checkoutDraft);
   const setCheckoutDraft = useUiStore((state) => state.setCheckoutDraft);
   const [shippingOptions, setShippingOptions] = useState<ShippingOption[]>([]);
@@ -71,13 +74,26 @@ export function CheckoutDeliveryForm() {
   return (
     <form
       className="space-y-4"
-      onSubmit={form.handleSubmit((values) => {
-        if (!selectedShipping) return;
-        setCheckoutDraft({
-          address: values,
-          shipping: selectedShipping,
-        });
-        router.push("/checkout/pagamento");
+      onSubmit={form.handleSubmit(async (values) => {
+        if (!selectedShipping || !draft.identification) {
+          return;
+        }
+
+        try {
+          await saveCheckoutProfile({
+            identification: draft.identification,
+            address: values,
+          });
+          setCheckoutDraft({
+            address: values,
+            shipping: selectedShipping,
+          });
+          router.push("/checkout/pagamento");
+        } catch (error) {
+          toast.error(
+            error instanceof Error ? error.message : "Nao foi possivel salvar o endereco."
+          );
+        }
       })}
     >
       <div className="grid gap-4 md:grid-cols-[1fr_auto]">
@@ -101,6 +117,7 @@ export function CheckoutDeliveryForm() {
           />
         </div>
       </div>
+
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <Label htmlFor="recipient">Destinataria</Label>
@@ -111,10 +128,12 @@ export function CheckoutDeliveryForm() {
           <Input id="label" {...form.register("label")} />
         </div>
       </div>
+
       <div>
         <Label htmlFor="street">Rua</Label>
         <Input id="street" {...form.register("street")} />
       </div>
+
       <div className="grid gap-4 md:grid-cols-3">
         <div>
           <Label htmlFor="number">Numero</Label>
@@ -125,6 +144,7 @@ export function CheckoutDeliveryForm() {
           <Input id="complement" {...form.register("complement")} />
         </div>
       </div>
+
       <div className="grid gap-4 md:grid-cols-3">
         <div>
           <Label htmlFor="district">Bairro</Label>
@@ -139,6 +159,7 @@ export function CheckoutDeliveryForm() {
           <Input id="state" {...form.register("state")} />
         </div>
       </div>
+
       <Button
         type="button"
         variant="outline"
@@ -147,6 +168,7 @@ export function CheckoutDeliveryForm() {
       >
         {loadingShipping ? "Calculando frete..." : "Calcular frete"}
       </Button>
+
       {shippingOptions.length > 0 ? (
         <ShippingOptions
           options={shippingOptions}
@@ -154,6 +176,7 @@ export function CheckoutDeliveryForm() {
           onChange={(option) => setSelectedShipping(option)}
         />
       ) : null}
+
       <Button className="w-full" type="submit" disabled={!selectedShipping}>
         Continuar para pagamento
       </Button>

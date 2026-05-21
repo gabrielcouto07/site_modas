@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 const steps = [
-  { href: "/checkout/identificacao", label: "Identificação" },
+  { href: "/checkout/identificacao", label: "Entrar" },
   { href: "/checkout/entrega", label: "Entrega" },
   { href: "/checkout/pagamento", label: "Pagamento" },
 ];

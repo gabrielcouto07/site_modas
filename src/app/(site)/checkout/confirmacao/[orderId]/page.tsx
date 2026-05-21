@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { auth } from "@/lib/auth";
 import { getOrderById } from "@/lib/storefront";
 import { formatBRL, formatDate } from "@/lib/utils";
 
@@ -12,7 +13,11 @@ export default async function OrderConfirmationPage({
   params: Promise<{ orderId: string }>;
 }) {
   const { orderId } = await params;
-  const order = await getOrderById(orderId);
+  const session = await auth();
+  const order = await getOrderById(orderId, {
+    userId: session?.user?.id,
+    role: session?.user?.role,
+  });
 
   if (!order) {
     notFound();
