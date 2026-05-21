@@ -1,17 +1,25 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Inter, Outfit, Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { BRAND } from "@/lib/constants";
 
-const fraunces = Fraunces({
+const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
+  weight: ["400", "500", "600", "700"],
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-accent",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -24,13 +32,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: BRAND.name,
     description: BRAND.description,
-    images: ["/og-image.png"],
+    type: "website",
   },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${fraunces.variable} ${inter.variable}`}>
+    <html lang="pt-BR" className={`${poppins.variable} ${inter.variable} ${outfit.variable}`}>
       <body className="font-sans">
         <Providers>{children}</Providers>
         <script type="application/ld+json" suppressHydrationWarning>

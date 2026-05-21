@@ -43,7 +43,15 @@ export async function getCatalogProducts(filters?: {
   color?: string;
   size?: string;
   query?: string;
+  sort?: "newest" | "price-asc" | "price-desc";
 }) {
+  const orderBy =
+    filters?.sort === "price-asc"
+      ? { basePrice: "asc" as const }
+      : filters?.sort === "price-desc"
+        ? { basePrice: "desc" as const }
+        : { createdAt: "desc" as const };
+
   return prisma.product.findMany({
     where: {
       isActive: true,
@@ -72,9 +80,7 @@ export async function getCatalogProducts(filters?: {
             }
           : undefined,
     },
-    orderBy: {
-      createdAt: "desc",
-    },
+    orderBy,
     include: productInclude,
   });
 }

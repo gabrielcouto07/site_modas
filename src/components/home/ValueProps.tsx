@@ -24,11 +24,13 @@ export function ValueProps() {
       {items.map((item) => (
         <div
           key={item.title}
-          className="rounded-[2rem] border border-border bg-white p-6 shadow-card"
+          className="rounded-[2rem] border border-border/70 bg-white/85 p-6 shadow-card"
         >
-          <item.icon className="mb-4 h-8 w-8 text-primary" />
-          <h3 className="mb-2 font-medium">{item.title}</h3>
-          <p className="text-sm text-foreground/70">{item.description}</p>
+          <div className="mb-4 inline-flex rounded-2xl bg-primary/10 p-3 text-primary">
+            <item.icon className="h-6 w-6" />
+          </div>
+          <h3 className="mb-2 font-medium text-foreground">{item.title}</h3>
+          <p className="text-sm leading-6 text-foreground/68">{item.description}</p>
         </div>
       ))}
     </section>
