@@ -26,7 +26,7 @@ export default async function LojaPage({
         : params.priceBand === "250-plus"
           ? { minPrice: 250, maxPrice: undefined }
           : {};
-  const [categories, products] = await Promise.all([
+  const [categoriesResult, productsResult] = await Promise.allSettled([
     getCategories(),
     getCatalogProducts({
       category: params.categoria,
@@ -37,6 +37,9 @@ export default async function LojaPage({
       ...priceBand,
     }),
   ]);
+
+  const categories = categoriesResult.status === "fulfilled" ? categoriesResult.value : [];
+  const products = productsResult.status === "fulfilled" ? productsResult.value : [];
 
   const filteredProducts =
     params.promo === "1" ? products.filter((product) => Boolean(product.compareAtPrice)) : products;

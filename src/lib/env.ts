@@ -1,7 +1,8 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-  DATABASE_URL: z.string().min(1),
+  DATABASE_URL: z.string().default(""),
+  USE_MOCK_DATABASE: z.enum(["true", "false"]).default("true"),
   NEXTAUTH_URL: z.string().url(),
   NEXTAUTH_SECRET: z.string().min(12),
   AUTH_TRUST_HOST: z.string().default("true"),
@@ -29,8 +30,14 @@ if (!parsed.success) {
 
 export const env = {
   ...parsed.data,
+  useMockDatabase: parsed.data.USE_MOCK_DATABASE === "true",
   authTrustHost: parsed.data.AUTH_TRUST_HOST === "true",
   melhorEnvioSandbox: parsed.data.MELHOR_ENVIO_SANDBOX === "true",
   mercadoPagoSandbox: parsed.data.MP_SANDBOX_MODE === "true",
   shippingFreeThreshold: Number(parsed.data.SHIPPING_FREE_THRESHOLD),
 };
+
+if (!env.useMockDatabase && !env.DATABASE_URL.trim()) {
+  console.error("DATABASE_URL is required when USE_MOCK_DATABASE is false");
+  throw new Error("DATABASE_URL ausente para o modo de banco real.");
+}

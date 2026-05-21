@@ -80,9 +80,14 @@ export function CheckoutDeliveryForm() {
         }
 
         try {
+          const address = {
+            ...values,
+            isDefault: values.isDefault ?? false,
+          };
+
           await saveCheckoutProfile({
             identification: draft.identification,
-            address: values,
+            address,
           });
           setCheckoutDraft({
             address: values,

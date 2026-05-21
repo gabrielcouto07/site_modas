@@ -3,7 +3,6 @@ import { Role } from "@prisma/client";
 import { compare } from "bcryptjs";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import Resend from "next-auth/providers/resend";
 import { z } from "zod";
 import { env } from "./env";
 import { prisma } from "./prisma";
@@ -14,7 +13,7 @@ const credentialsSchema = z.object({
 });
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma),
+  adapter: env.useMockDatabase ? undefined : PrismaAdapter(prisma),
   trustHost: env.authTrustHost,
   session: {
     strategy: "jwt",
@@ -33,6 +32,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const parsed = credentialsSchema.safeParse(rawCredentials);
         if (!parsed.success) {
           return null;
+        }
+
+        if (env.useMockDatabase) {
+          const email = parsed.data.email.trim().toLowerCase();
+          const isAdmin =
+            email === env.ADMIN_EMAIL.trim().toLowerCase() && parsed.data.password === env.ADMIN_PASSWORD;
+
+          return {
+            id: email,
+            email,
+            name: isAdmin ? "Admin" : email.split("@")[0] ?? "Cliente",
+            role: isAdmin ? Role.ADMIN : Role.USER,
+          };
         }
 
         const user = await prisma.user.findUnique({
@@ -55,10 +67,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           role: user.role,
         };
       },
-    }),
-    Resend({
-      from: env.RESEND_FROM_EMAIL,
-      apiKey: env.RESEND_API_KEY,
     }),
   ],
   callbacks: {
